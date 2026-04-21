@@ -1,0 +1,1057 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Briefly — Tes concurrents te montrent déjà leur stratégie.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Epilogue:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --black:   #090807;
+  --dark:    #111009;
+  --dark2:   #1a1814;
+  --dark3:   #221f1a;
+  --ivory:   #f6f2eb;
+  --warm:    #faf8f4;
+  --orange:  #e5400d;
+  --orange2: #b83209;
+  --oglow:   rgba(229,64,13,0.14);
+  --muted:   #685f54;
+  --dim:     #9a9088;
+  --border:  rgba(255,255,255,0.07);
+  --borderL: #ddd8ce;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Epilogue', sans-serif;
+  background: var(--black);
+  color: var(--ivory);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* grain */
+body::after {
+  content:''; position:fixed; inset:0; z-index:998; pointer-events:none;
+  opacity:.022;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size:180px;
+}
+
+/* ── NAV ── */
+nav {
+  position:fixed; top:0; left:0; right:0; z-index:200;
+  display:flex; align-items:center; justify-content:space-between;
+  padding:20px 56px;
+  background:rgba(9,8,7,0.94);
+  backdrop-filter:blur(24px);
+  border-bottom:1px solid var(--border);
+}
+.logo { font-family:'Playfair Display',serif; font-size:21px; letter-spacing:-.4px; }
+.logo-accent { color:var(--orange); }
+.nav-links { display:flex; align-items:center; gap:32px; }
+.nav-link { color:var(--dim); font-size:13px; text-decoration:none; transition:color .2s; }
+.nav-link:hover { color:var(--ivory); }
+.btn-nav {
+  background:var(--orange); color:white; padding:10px 22px; border-radius:4px;
+  font-size:13px; font-weight:600; text-decoration:none; letter-spacing:.02em;
+  transition:all .2s; white-space:nowrap;
+}
+.btn-nav:hover { background:var(--orange2); transform:translateY(-1px); }
+
+/* ── HERO ── */
+.hero {
+  min-height:100vh;
+  display:grid; grid-template-columns:1fr 490px; gap:0;
+  padding:155px 56px 90px;
+  max-width:1200px; margin:0 auto; align-items:center;
+}
+.hero-left { padding-right:56px; }
+
+.eyebrow {
+  display:inline-flex; align-items:center; gap:10px;
+  font-size:10.5px; font-weight:600; letter-spacing:.16em; text-transform:uppercase;
+  color:var(--orange); margin-bottom:32px;
+}
+.eyebrow-line { width:28px; height:1px; background:var(--orange); }
+
+h1 {
+  font-family:'Playfair Display',serif;
+  font-size:clamp(40px,4.8vw,68px); font-weight:900;
+  line-height:1.02; letter-spacing:-2.5px; margin-bottom:28px;
+}
+h1 .it { font-style:italic; color:var(--orange); }
+h1 .sm { font-size:.65em; letter-spacing:-1px; color:var(--dim); display:block; margin-top:4px; }
+
+.hero-body {
+  font-size:17px; color:var(--dim); font-weight:300; line-height:1.75;
+  margin-bottom:44px; max-width:490px;
+  border-left:2px solid var(--orange); padding-left:18px;
+}
+.hero-body strong { color:rgba(255,255,255,.75); font-weight:500; }
+
+.micro-proof {
+  display:inline-flex; align-items:center; gap:8px;
+  font-size:11.5px; color:var(--dim); margin-bottom:36px;
+}
+.micro-dot { width:6px; height:6px; border-radius:50%; background:var(--orange); animation:pulse 2s infinite; }
+@keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.3;transform:scale(.7)} }
+
+.cta-row { display:flex; align-items:center; gap:20px; flex-wrap:wrap; }
+
+.btn-hero {
+  background:var(--orange); color:white;
+  padding:15px 32px; border-radius:4px;
+  font-size:14px; font-weight:600; letter-spacing:.03em;
+  text-decoration:none; display:inline-flex; align-items:center; gap:10px;
+  transition:all .2s; border:none; cursor:pointer; font-family:'Epilogue',sans-serif;
+}
+.btn-hero:hover { background:var(--orange2); transform:translateY(-2px); box-shadow:0 10px 36px rgba(229,64,13,.32); }
+.btn-hero svg { transition:transform .2s; }
+.btn-hero:hover svg { transform:translateX(4px); }
+
+.cta-note { font-size:12px; color:var(--muted); display:flex; align-items:center; gap:5px; }
+.cta-note::before { content:'↳'; color:var(--orange); }
+
+/* ── REPORT CARD ── */
+.hero-right { position:relative; }
+
+.rcard {
+  background:var(--dark2);
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:14px; overflow:hidden;
+  box-shadow:0 40px 90px rgba(0,0,0,.65), 0 0 0 1px rgba(255,255,255,.04);
+  animation:float 7s ease-in-out infinite;
+}
+@keyframes float { 0%,100%{transform:translateY(0) rotate(-.3deg)} 50%{transform:translateY(-14px) rotate(.3deg)} }
+
+.rcard-top {
+  background:var(--dark); padding:14px 20px;
+  display:flex; align-items:center; justify-content:space-between;
+  border-bottom:1px solid var(--border);
+}
+.rdots { display:flex; gap:6px; }
+.rdots span { width:9px; height:9px; border-radius:50%; }
+.rd1{background:#ff5f57;} .rd2{background:#febc2e;} .rd3{background:#28c840;}
+.rtitle { font-size:11px; color:rgba(255,255,255,.4); letter-spacing:.04em; }
+.rtitle strong { color:rgba(255,255,255,.7); }
+
+/* pattern alert bar */
+.rpattern {
+  background:rgba(229,64,13,.18);
+  border-bottom:1px solid rgba(229,64,13,.28);
+  padding:9px 18px;
+  display:flex; align-items:center; gap:8px;
+  font-size:11px; color:#ff8060; font-weight:600; letter-spacing:.02em;
+}
+.rblink { width:6px; height:6px; border-radius:50%; background:var(--orange); animation:pulse 1.5s infinite; }
+
+.rbody { padding:16px 18px; }
+
+/* activity score */
+.rscore {
+  background:var(--dark); border-radius:8px; padding:13px 15px; margin-bottom:14px;
+  display:flex; align-items:center; justify-content:space-between;
+}
+.rscore-left {}
+.rscore-lbl { font-size:9.5px; color:var(--dim); letter-spacing:.08em; text-transform:uppercase; margin-bottom:4px; }
+.rscore-val { display:flex; align-items:center; gap:8px; }
+.rscore-num { font-family:'Playfair Display',serif; font-size:30px; color:white; line-height:1; }
+.rscore-badge { font-size:9.5px; font-weight:700; padding:3px 8px; border-radius:3px; background:rgba(229,64,13,.2); color:#ff7040; letter-spacing:.07em; text-transform:uppercase; }
+
+/* accel block */
+.raccel {
+  background:linear-gradient(135deg, rgba(229,64,13,.12), rgba(229,64,13,.04));
+  border:1px solid rgba(229,64,13,.18); border-radius:7px;
+  padding:10px 12px; margin-bottom:13px;
+  display:flex; align-items:center; gap:10px;
+}
+.raccel-icon { font-size:16px; }
+.raccel-text { font-size:11px; color:rgba(255,255,255,.8); line-height:1.4; }
+.raccel-text strong { color:#ff8060; }
+
+.rsect { margin-bottom:12px; }
+.rsect-head {
+  font-size:9.5px; font-weight:700; text-transform:uppercase; letter-spacing:.12em;
+  color:var(--muted); margin-bottom:7px;
+  display:flex; align-items:center; gap:6px;
+}
+.rsect-head::after { content:''; flex:1; height:1px; background:var(--border); }
+
+.ri {
+  display:flex; align-items:flex-start; gap:7px;
+  background:var(--dark); border-radius:5px; padding:7px 9px; margin-bottom:4px;
+  font-size:11px; line-height:1.4;
+}
+.tag {
+  font-size:9px; font-weight:700; padding:2px 6px; border-radius:3px;
+  white-space:nowrap; flex-shrink:0; margin-top:1px;
+  letter-spacing:.05em; text-transform:uppercase;
+}
+.tr{background:rgba(229,64,13,.2);color:#ff7040;}
+.tb{background:rgba(60,120,255,.2);color:#80a0ff;}
+.tg{background:rgba(40,160,80,.2);color:#50c878;}
+.ta{background:rgba(255,160,20,.2);color:#ffa020;}
+.ri-txt { color:rgba(255,255,255,.72); }
+.ri-txt strong { color:rgba(255,255,255,.95); }
+
+.rreco {
+  background:rgba(229,64,13,.1); border:1px solid rgba(229,64,13,.22);
+  border-radius:7px; padding:11px 13px;
+}
+.rreco-lbl { font-size:9px; font-weight:700; text-transform:uppercase; letter-spacing:.12em; color:var(--orange); margin-bottom:5px; }
+.rreco-txt { font-size:11px; color:rgba(255,255,255,.78); line-height:1.5; }
+.rreco-action { margin-top:7px; font-size:11px; color:var(--orange); font-weight:600; }
+
+/* ── PAIN ── */
+.pain {
+  background:var(--dark);
+  border-top:1px solid var(--border); border-bottom:1px solid var(--border);
+  padding:100px 56px;
+}
+.pain-inner { max-width:1100px; margin:0 auto; }
+.pain-grid { display:grid; grid-template-columns:1fr 1fr; gap:80px; align-items:start; }
+
+.slabel {
+  font-size:10px; font-weight:700; letter-spacing:.16em; text-transform:uppercase;
+  color:var(--orange); margin-bottom:18px;
+}
+h2 {
+  font-family:'Playfair Display',serif;
+  font-size:clamp(28px,3vw,44px); font-weight:900; letter-spacing:-1.5px; line-height:1.08;
+  margin-bottom:12px;
+}
+.ssub {
+  font-size:15.5px; color:var(--dim); font-weight:300; line-height:1.75;
+  margin-bottom:40px;
+}
+
+.pain-list { display:flex; flex-direction:column; gap:0; }
+.pain-item {
+  display:flex; align-items:flex-start; gap:0;
+  padding:22px 0; border-bottom:1px solid var(--border);
+  position:relative;
+}
+.pain-item:last-child { border-bottom:none; }
+.pain-num {
+  font-family:'Playfair Display',serif; font-size:13px; color:var(--orange);
+  font-weight:700; flex-shrink:0; width:28px; padding-top:2px;
+}
+.pain-content {}
+.pain-content h4 { font-size:15px; font-weight:500; margin-bottom:5px; letter-spacing:-.2px; }
+.pain-content p { font-size:13px; color:var(--dim); line-height:1.6; font-weight:300; }
+.pain-punch {
+  font-family:'Playfair Display',serif; font-style:italic;
+  font-size:16px; color:rgba(255,255,255,.9); line-height:1.55;
+  border-left:2px solid var(--orange); padding-left:18px; margin-top:36px;
+}
+
+/* ── WHY NOW ── */
+.section { max-width:1100px; margin:0 auto; padding:100px 56px; }
+
+.wnow-grid { display:grid; grid-template-columns:1fr 1fr; gap:2px; background:var(--border); border:1px solid var(--border); border-radius:12px; overflow:hidden; }
+.wnow-cell {
+  background:var(--dark2); padding:40px 36px;
+  transition:background .3s;
+}
+.wnow-cell:hover { background:var(--dark3); }
+.wnow-cell-num { font-family:'Playfair Display',serif; font-size:48px; color:rgba(255,255,255,.05); line-height:1; margin-bottom:18px; letter-spacing:-2px; }
+.wnow-cell-icon { font-size:24px; margin-bottom:14px; display:block; }
+.wnow-cell h3 { font-size:16px; font-weight:500; margin-bottom:8px; letter-spacing:-.2px; }
+.wnow-cell p { font-size:13px; color:var(--dim); line-height:1.65; font-weight:300; }
+.wnow-punch {
+  grid-column:1/-1; background:var(--orange);
+  padding:36px; text-align:center;
+}
+.wnow-punch p { font-family:'Playfair Display',serif; font-size:clamp(16px,2vw,22px); color:white; font-style:italic; line-height:1.5; }
+
+/* ── HOW ── */
+.steps-row { display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--border); border:1px solid var(--border); border-radius:12px; overflow:hidden; }
+.step { background:var(--dark2); padding:44px 34px; transition:background .3s; }
+.step:hover { background:var(--dark3); }
+.step-n { font-family:'Playfair Display',serif; font-size:64px; color:rgba(255,255,255,.05); line-height:1; margin-bottom:22px; letter-spacing:-3px; }
+.step-em { font-size:20px; display:block; margin-bottom:16px; }
+.step h3 { font-size:16px; font-weight:500; margin-bottom:8px; letter-spacing:-.2px; }
+.step p { font-size:13px; color:var(--dim); line-height:1.68; font-weight:300; }
+.step p strong { color:rgba(255,255,255,.7); font-weight:500; }
+
+/* ── DISCOVER FEATURE ── */
+.discover-wrap {
+  background:var(--dark); border-top:1px solid var(--border); border-bottom:1px solid var(--border);
+  padding:100px 56px;
+}
+.discover-inner { max-width:1100px; margin:0 auto; }
+.discover-grid { display:grid; grid-template-columns:1fr 1fr; gap:72px; align-items:center; }
+
+.discover-badge {
+  display:inline-flex; align-items:center; gap:6px;
+  background:rgba(229,64,13,.12); color:var(--orange);
+  font-size:10.5px; font-weight:700; letter-spacing:.12em; text-transform:uppercase;
+  padding:5px 12px; border-radius:20px; border:1px solid rgba(229,64,13,.2);
+  margin-bottom:20px;
+}
+.discover-badge::before { content:'✦'; font-size:8px; }
+
+.discover-steps { display:flex; flex-direction:column; gap:2px; margin-top:40px; }
+.dstep {
+  display:flex; align-items:flex-start; gap:14px;
+  padding:18px 20px; border-radius:8px;
+  background:rgba(255,255,255,.02); border:1px solid transparent;
+  transition:all .3s; cursor:default;
+}
+.dstep:hover { background:rgba(229,64,13,.06); border-color:rgba(229,64,13,.15); }
+.dstep-num {
+  width:28px; height:28px; border-radius:50%;
+  background:rgba(229,64,13,.15); border:1px solid rgba(229,64,13,.25);
+  display:flex; align-items:center; justify-content:center;
+  font-size:11px; font-weight:700; color:var(--orange); flex-shrink:0;
+}
+.dstep h4 { font-size:14px; font-weight:500; margin-bottom:4px; }
+.dstep p { font-size:12.5px; color:var(--dim); line-height:1.5; font-weight:300; }
+
+/* discover mockup */
+.dmock {
+  background:var(--dark2); border:1px solid rgba(255,255,255,.1);
+  border-radius:12px; overflow:hidden;
+  box-shadow:0 24px 60px rgba(0,0,0,.5);
+}
+.dmock-top {
+  background:var(--dark); padding:14px 18px;
+  display:flex; align-items:center; gap:10px; border-bottom:1px solid var(--border);
+}
+.dmock-input {
+  flex:1; background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.1);
+  border-radius:6px; padding:8px 12px;
+  display:flex; align-items:center; justify-content:space-between;
+}
+.dmock-input-text { font-size:12px; color:rgba(255,255,255,.5); }
+.dmock-input-cursor { width:1px; height:14px; background:var(--orange); animation:blink-cur .9s infinite; }
+@keyframes blink-cur { 0%,50%{opacity:1} 51%,100%{opacity:0} }
+.dmock-btn { background:var(--orange); color:white; font-size:11px; font-weight:600; padding:7px 14px; border-radius:5px; }
+
+.dmock-body { padding:16px; }
+.dmock-lbl { font-size:9.5px; font-weight:700; text-transform:uppercase; letter-spacing:.12em; color:var(--dim); margin-bottom:10px; }
+
+.dsug {
+  display:flex; align-items:center; gap:10px;
+  padding:10px 12px; border-radius:7px; margin-bottom:6px;
+  background:var(--dark); border:1px solid var(--border);
+  cursor:default; transition:all .25s;
+}
+.dsug:hover { background:var(--dark3); border-color:rgba(229,64,13,.2); }
+.dsug.checked { background:rgba(229,64,13,.08); border-color:rgba(229,64,13,.25); }
+.dsug-check {
+  width:18px; height:18px; border-radius:4px; flex-shrink:0;
+  border:1.5px solid rgba(255,255,255,.15);
+  display:flex; align-items:center; justify-content:center;
+}
+.dsug.checked .dsug-check { background:var(--orange); border-color:var(--orange); }
+.dsug.checked .dsug-check::after { content:'✓'; font-size:10px; color:white; font-weight:700; }
+.dsug-info { flex:1; }
+.dsug-name { font-size:12.5px; font-weight:500; color:rgba(255,255,255,.85); }
+.dsug-meta { font-size:10.5px; color:var(--dim); margin-top:1px; }
+.dsug-match { font-size:9px; font-weight:600; padding:2px 6px; border-radius:10px; background:rgba(40,160,80,.15); color:#50c878; }
+
+.dmock-footer {
+  border-top:1px solid var(--border); padding:12px 16px;
+  display:flex; justify-content:space-between; align-items:center;
+}
+.dmock-footer-note { font-size:11px; color:var(--dim); }
+.dmock-footer-btn { background:var(--orange); color:white; font-size:11px; font-weight:600; padding:7px 16px; border-radius:5px; }
+
+/* ── FEATURES ── */
+.feats { display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--border); border:1px solid var(--border); border-radius:12px; overflow:hidden; }
+.feat { background:var(--dark2); padding:34px 28px; transition:background .3s; }
+.feat:hover { background:var(--dark3); }
+.feat-ico { font-size:18px; margin-bottom:16px; }
+.feat h3 { font-size:15px; font-weight:500; margin-bottom:7px; letter-spacing:-.2px; }
+.feat p { font-size:13px; color:var(--dim); line-height:1.65; font-weight:300; }
+
+/* ── VS CHATGPT ── */
+.vs-wrap { background:var(--dark); border-top:1px solid var(--border); border-bottom:1px solid var(--border); padding:80px 56px; }
+.vs-inner { max-width:1100px; margin:0 auto; }
+.vs-box { background:var(--dark2); border:1px solid var(--border); border-radius:12px; padding:48px 56px; max-width:760px; }
+.vs-box h3 { font-family:'Playfair Display',serif; font-size:28px; font-weight:700; letter-spacing:-1px; margin-bottom:28px; }
+.vs-row { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+.vs-col { padding:20px 22px; border-radius:8px; }
+.vs-chatgpt { background:rgba(255,255,255,.03); border:1px solid rgba(255,255,255,.07); }
+.vs-briefly { background:rgba(229,64,13,.08); border:1px solid rgba(229,64,13,.18); }
+.vs-lbl { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.12em; margin-bottom:12px; }
+.vs-chatgpt .vs-lbl { color:var(--dim); }
+.vs-briefly .vs-lbl { color:var(--orange); }
+.vs-line { font-size:13px; color:rgba(255,255,255,.6); padding:7px 0; border-bottom:1px solid rgba(255,255,255,.05); font-weight:300; line-height:1.4; display:flex; align-items:flex-start; gap:8px; }
+.vs-line:last-child { border-bottom:none; }
+.vs-chatgpt .vs-line::before { content:'·'; color:var(--muted); flex-shrink:0; }
+.vs-briefly .vs-line::before { content:'→'; color:var(--orange); flex-shrink:0; font-weight:500; }
+.vs-briefly .vs-line { color:rgba(255,255,255,.8); }
+.vs-punch { margin-top:28px; font-family:'Playfair Display',serif; font-style:italic; font-size:16px; color:rgba(255,255,255,.85); }
+
+/* ── USE CASES ── */
+.ucases { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+.ucase {
+  background:var(--dark2); border:1px solid var(--border); border-radius:10px; padding:30px 26px;
+  position:relative; overflow:hidden; transition:border-color .3s;
+}
+.ucase::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; background:var(--orange); transform:scaleX(0); transition:transform .3s; transform-origin:left; }
+.ucase:hover { border-color:rgba(229,64,13,.25); }
+.ucase:hover::before { transform:scaleX(1); }
+.ucase-who { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.12em; color:var(--orange); margin-bottom:14px; }
+.ucase h3 { font-size:16px; font-weight:500; margin-bottom:8px; letter-spacing:-.2px; }
+.ucase p { font-size:13px; color:var(--dim); line-height:1.65; font-weight:300; margin-bottom:16px; }
+.ucase-result { font-size:12px; color:rgba(255,255,255,.55); padding:9px 12px; background:rgba(255,255,255,.03); border-radius:5px; border-left:2px solid var(--orange); font-style:italic; }
+
+/* ── PROOF ── */
+.proof-wrap { background:var(--dark); border-top:1px solid var(--border); padding:90px 56px; }
+.proof-inner { max-width:1100px; margin:0 auto; }
+.proof-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--border); border:1px solid var(--border); border-radius:12px; overflow:hidden; margin-top:48px; }
+.pquote { background:var(--dark2); padding:30px 26px; }
+.pq-text { font-family:'Playfair Display',serif; font-size:14.5px; font-style:italic; line-height:1.72; color:rgba(255,255,255,.78); margin-bottom:20px; }
+.pq-author { display:flex; align-items:center; gap:10px; }
+.pq-av { width:32px; height:32px; border-radius:50%; background:var(--oglow); border:1px solid rgba(229,64,13,.3); display:flex; align-items:center; justify-content:center; font-size:11.5px; font-weight:700; color:var(--orange); }
+.pq-name { font-size:12.5px; color:rgba(255,255,255,.7); font-weight:500; }
+.pq-role { font-size:11px; color:var(--muted); font-weight:300; }
+.pq-tag { margin-left:auto; font-size:9.5px; padding:3px 8px; border-radius:10px; background:rgba(229,64,13,.12); color:var(--orange); font-weight:600; }
+
+/* ── PRICING ── */
+.pricing-wrap { background:var(--dark); border-top:1px solid var(--border); }
+.pricing-inner { max-width:1100px; margin:0 auto; padding:100px 56px; }
+.pricing-note { font-size:12px; color:var(--muted); margin-bottom:48px; display:flex; align-items:center; gap:8px; }
+.pricing-note::before { content:'✓'; color:var(--orange); font-weight:700; }
+
+.pcards { display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--border); border:1px solid var(--border); border-radius:12px; overflow:hidden; }
+.pcard { background:var(--dark2); padding:42px 34px; }
+.pcard.featured { background:var(--orange); }
+.pcard-tier { font-size:9.5px; font-weight:700; letter-spacing:.16em; text-transform:uppercase; color:rgba(255,255,255,.35); margin-bottom:22px; }
+.pcard.featured .pcard-tier { color:rgba(255,255,255,.7); }
+.pamt { display:flex; align-items:baseline; gap:3px; margin-bottom:3px; }
+.pcurr { font-size:20px; color:rgba(255,255,255,.4); margin-top:8px; }
+.pnum { font-family:'Playfair Display',serif; font-size:50px; font-weight:700; color:white; letter-spacing:-2px; line-height:1; }
+.pper { font-size:12.5px; color:rgba(255,255,255,.3); margin-bottom:30px; }
+.pcard.featured .pper { color:rgba(255,255,255,.65); }
+.pfeat { list-style:none; margin-bottom:34px; }
+.pfeat li { font-size:12.5px; color:rgba(255,255,255,.45); padding:8px 0; border-bottom:1px solid rgba(255,255,255,.06); display:flex; align-items:flex-start; gap:9px; font-weight:300; line-height:1.4; }
+.pcard.featured .pfeat li { color:rgba(255,255,255,.85); border-color:rgba(255,255,255,.14); }
+.pfeat li::before { content:'—'; font-size:11px; color:rgba(255,255,255,.18); flex-shrink:0; }
+.pcard.featured .pfeat li::before { color:rgba(255,255,255,.45); }
+
+.pbtn { display:block; text-align:center; padding:13px; border-radius:5px; font-size:13px; font-weight:600; text-decoration:none; transition:all .2s; font-family:'Epilogue',sans-serif; border:none; cursor:pointer; }
+.pbtn-dim { background:rgba(255,255,255,.07); color:rgba(255,255,255,.55); border:1px solid rgba(255,255,255,.1); }
+.pbtn-dim:hover { background:rgba(255,255,255,.12); color:white; }
+.pbtn-white { background:white; color:var(--orange); }
+.pbtn-white:hover { background:var(--ivory); transform:translateY(-2px); box-shadow:0 8px 28px rgba(0,0,0,.4); }
+
+/* ── FAQ ── */
+.faq-list { max-width:700px; }
+.faq-item { border-bottom:1px solid var(--border); padding:24px 0; }
+.fq { font-size:15px; font-weight:500; margin-bottom:10px; color:rgba(255,255,255,.88); }
+.fa { font-size:13.5px; color:var(--dim); line-height:1.76; font-weight:300; }
+.fa strong { color:rgba(255,255,255,.7); font-weight:500; }
+
+/* ── FINAL CTA ── */
+.fcta-wrap { padding:0 56px 100px; max-width:1100px; margin:0 auto; }
+.fcta {
+  background:linear-gradient(140deg, var(--dark2) 0%, #1a100a 100%);
+  border:1px solid rgba(229,64,13,.22); border-radius:16px;
+  padding:80px 80px; text-align:center; position:relative; overflow:hidden;
+}
+.fcta::before {
+  content:''; position:absolute; top:-100px; left:50%; transform:translateX(-50%);
+  width:500px; height:500px;
+  background:radial-gradient(circle, rgba(229,64,13,.1) 0%, transparent 65%);
+  pointer-events:none;
+}
+.fcta h2 { font-family:'Playfair Display',serif; font-size:clamp(28px,3.8vw,50px); font-weight:900; letter-spacing:-2px; line-height:1.05; margin-bottom:14px; position:relative; }
+.fcta-sub { font-size:16px; color:var(--dim); font-weight:300; line-height:1.7; margin-bottom:44px; max-width:480px; margin-left:auto; margin-right:auto; position:relative; }
+
+.sform { display:flex; gap:10px; max-width:460px; margin:0 auto 12px; position:relative; }
+.sform input { flex:1; background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.12); border-radius:5px; padding:15px 17px; font-size:14px; color:white; font-family:'Epilogue',sans-serif; outline:none; transition:border-color .2s; }
+.sform input:focus { border-color:var(--orange); background:rgba(255,255,255,.1); }
+.sform input::placeholder { color:rgba(255,255,255,.2); }
+.sform-note { font-size:12px; color:var(--muted); text-align:center; }
+
+/* ── FOOTER ── */
+footer { border-top:1px solid var(--border); padding:30px 56px; display:flex; justify-content:space-between; align-items:center; }
+.flogo { font-family:'Playfair Display',serif; font-size:18px; }
+.flogo span { color:var(--orange); }
+footer p { font-size:12px; color:var(--muted); }
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp { from{opacity:0;transform:translateY(22px)} to{opacity:1;transform:translateY(0)} }
+.hero-left>* { animation:fadeUp .6s ease both; }
+.eyebrow{animation-delay:.08s} h1{animation-delay:.2s} .hero-body{animation-delay:.32s} .micro-proof{animation-delay:.42s} .cta-row{animation-delay:.52s}
+.hero-right { animation:fadeUp .7s .38s ease both; }
+
+/* ── RESPONSIVE ── */
+@media(max-width:960px){
+  nav,.pain,.section,.discover-wrap,.vs-wrap,.proof-wrap,.pricing-inner,.fcta-wrap,footer{ padding-left:24px; padding-right:24px; }
+  .hero{ grid-template-columns:1fr; padding-top:130px; }
+  .hero-right,.hero-left{ padding-right:0; }
+  .hero-right{ display:none; }
+  .steps-row,.feats,.ucases,.pcards,.proof-grid,.wnow-grid{ grid-template-columns:1fr; }
+  .pain-grid,.discover-grid,.vs-row,.fcta{ padding:40px 24px; }
+  .pain-grid,.discover-grid{ grid-template-columns:1fr; gap:48px; }
+  .vs-row{ grid-template-columns:1fr; }
+  .sform{ flex-direction:column; }
+  footer{ flex-direction:column; gap:12px; text-align:center; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="logo">brief<span class="logo-accent">.</span>ly</div>
+  <div class="nav-links">
+    <a href="#how" class="nav-link">Comment</a>
+    <a href="#discover" class="nav-link">Trouver mes concurrents</a>
+    <a href="#pricing" class="nav-link">Tarifs</a>
+    <a href="#signup" class="btn-nav">Voir mon premier rapport →</a>
+  </div>
+</nav>
+
+<!-- ═══════ HERO ═══════════════════════════════════════════ -->
+<div class="hero">
+  <div class="hero-left">
+    <div class="eyebrow"><span class="eyebrow-line"></span>Radar stratégique · Bêta ouverte</div>
+
+    <h1>Tes concurrents te<br>montrent déjà<br><span class="it">leur stratégie.</span><br><span class="sm">Tu ne sais juste pas la lire.</span></h1>
+
+    <p class="hero-body">
+      Briefly transforme leurs signaux publics en décisions concrètes.<br>
+      <strong>Chaque lundi à 8h, tu sais ce qui se prépare. Avant que ça arrive.</strong>
+    </p>
+
+    <div class="micro-proof">
+      <span class="micro-dot"></span>
+      327 signaux détectés cette semaine sur 52 SaaS suivis
+    </div>
+
+    <div class="cta-row">
+      <a href="#signup" class="btn-hero">
+        Voir mon premier rapport
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+      <span class="cta-note">14 jours gratuits · Sans carte bancaire</span>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <div class="rcard">
+      <div class="rcard-top">
+        <div class="rdots"><span class="rd1"></span><span class="rd2"></span><span class="rd3"></span></div>
+        <div class="rtitle"><strong>Briefly</strong> — Lundi 21 avril · 08:00</div>
+      </div>
+      <div class="rpattern">
+        <div class="rblink"></div>
+        ⚠️ Pattern détecté : 3 concurrents augmentent leurs prix simultanément
+      </div>
+      <div class="rbody">
+        <div class="rscore">
+          <div>
+            <div class="rscore-lbl">Activité concurrentielle</div>
+            <div class="rscore-val">
+              <div class="rscore-num">87</div>
+              <div class="rscore-badge">ÉLEVÉE</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="raccel">
+          <div class="raccel-icon">🔥</div>
+          <div class="raccel-text"><strong>Accélération détectée</strong> sur le segment PME — 3 acteurs en mouvement simultané cette semaine</div>
+        </div>
+
+        <div class="rsect">
+          <div class="rsect-head">Signaux critiques</div>
+          <div class="ri"><span class="tag tr">PRIX</span><div class="ri-txt"><strong>Concurrent A</strong> : Pro 49€ → 69€. Segment entrée de gamme exposé.</div></div>
+          <div class="ri"><span class="tag tb">PRODUIT</span><div class="ri-txt"><strong>Concurrent B</strong> lance une feature IA — nouvelle landing dédiée.</div></div>
+          <div class="ri"><span class="tag ta">EMPLOI</span><div class="ri-txt"><strong>Concurrent B</strong> recrute Head of Growth → offensive commerciale ~60j.</div></div>
+        </div>
+
+        <div class="rreco">
+          <div class="rreco-lbl">✦ Opportunité détectée</div>
+          <div class="rreco-txt">Fenêtre sur le segment <em>PME budget serré</em> — avant saturation.</div>
+          <div class="rreco-action">→ Action cette semaine : tester une offre à 39€/mois</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ PAIN ═══════════════════════════════════════════ -->
+<div class="pain">
+  <div class="pain-inner">
+    <div class="pain-grid">
+      <div>
+        <div class="slabel">Le vrai problème</div>
+        <h2>Le problème n'est pas<br>l'information.<br>C'est le timing.</h2>
+        <p class="ssub">L'info sur tes concurrents est publique. Elle est gratuite. Le problème, c'est que tu la vois toujours trop tard — ou jamais.</p>
+
+        <blockquote class="pain-punch">
+          Dans ton marché, tu ne perds pas à cause d'un mauvais produit. Tu perds parce que tu vois trop tard.
+        </blockquote>
+      </div>
+
+      <div class="pain-list">
+        <div class="pain-item">
+          <div class="pain-num">01</div>
+          <div class="pain-content">
+            <h4>Ton concurrent change ses prix</h4>
+            <p>Tu le découvres après avoir perdu un deal. Le commercial ne savait pas quoi répondre. Tu comprends 3 semaines plus tard.</p>
+          </div>
+        </div>
+        <div class="pain-item">
+          <div class="pain-num">02</div>
+          <div class="pain-content">
+            <h4>Il recrute un Head of Sales</h4>
+            <p>C'est un signal à 60 jours. Dans 2 mois, leur machine commerciale s'emballe. Tu ne l'as pas vu venir. Tu réagis en retard.</p>
+          </div>
+        </div>
+        <div class="pain-item">
+          <div class="pain-num">03</div>
+          <div class="pain-content">
+            <h4>Il teste un nouveau canal</h4>
+            <p>Nouveau blog, nouveau partenariat, nouvelle catégorie d'emploi. Tu arrives quand c'est déjà saturé. Les signaux étaient là.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ WHY NOW ════════════════════════════════════════ -->
+<div class="section">
+  <div class="slabel">Pourquoi maintenant</div>
+  <h2>Le marché ne ralentit pas.<br>Il accélère.</h2>
+  <p class="ssub" style="margin-bottom:48px;">Ce que tu pouvais voir en 1 mois avant se joue maintenant en 7 jours.</p>
+
+  <div class="wnow-grid">
+    <div class="wnow-cell">
+      <div class="wnow-cell-num">01</div>
+      <span class="wnow-cell-icon">⚡</span>
+      <h3>L'IA réduit les cycles produit</h3>
+      <p>Tes concurrents shippent des features en semaines, pas en trimestres. Les décisions stratégiques s'accélèrent.</p>
+    </div>
+    <div class="wnow-cell">
+      <div class="wnow-cell-num">02</div>
+      <span class="wnow-cell-icon">📊</span>
+      <h3>Les signaux changent chaque semaine</h3>
+      <p>Un pricing change, un recrutement, un partenariat annoncé — la fenêtre pour réagir se réduit à quelques jours.</p>
+    </div>
+    <div class="wnow-cell">
+      <div class="wnow-cell-num">03</div>
+      <span class="wnow-cell-icon">🎯</span>
+      <h3>Ne pas voir = perdre du terrain</h3>
+      <p>Chaque semaine sans veille, c'est une semaine où tes concurrents bougent et toi tu restes sur tes hypothèses d'il y a un mois.</p>
+    </div>
+    <div class="wnow-punch">
+      <p>"Ce n'est pas une question d'outil. C'est une question de vitesse de décision."</p>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ HOW IT WORKS ═══════════════════════════════════ -->
+<div class="section" id="how" style="padding-top:0">
+  <div class="slabel">Comment ça marche</div>
+  <h2>On surveille tout.<br>Tu lis.</h2>
+  <p class="ssub" style="margin-bottom:48px;">Aucun setup complexe. Aucune maintenance. Tu entres des URLs — ou on les trouve pour toi.</p>
+
+  <div class="steps-row">
+    <div class="step">
+      <div class="step-n">01</div>
+      <span class="step-em">🎯</span>
+      <h3>Trouve tes concurrents</h3>
+      <p>Entre leurs URLs directement. Ou tape le nom de ton entreprise et Briefly <strong>suggère les plus pertinents</strong> selon ton marché, ta géo, ton positionnement.</p>
+    </div>
+    <div class="step">
+      <div class="step-n">02</div>
+      <span class="step-em">⚡</span>
+      <h3>Briefly surveille tout</h3>
+      <p>Crawlers actifs 24h/24. Prix, contenus, recrutements, avis, presse. <strong>Chaque signal public est capturé et interprété.</strong> Tu n'as rien à faire.</p>
+    </div>
+    <div class="step">
+      <div class="step-n">03</div>
+      <span class="step-em">📬</span>
+      <h3>Tu reçois ce qui compte</h3>
+      <p>Lundi 8h. Un rapport stratégique : signaux critiques, score d'activité, <strong>recommandation actionnable</strong>. 3 minutes. Puis tu décides.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ DISCOVER FEATURE ══════════════════════════════ -->
+<div class="discover-wrap" id="discover">
+  <div class="discover-inner">
+    <div class="discover-grid">
+      <div>
+        <div class="discover-badge">Nouvelle fonctionnalité</div>
+        <div class="slabel">Découverte automatique</div>
+        <h2>Tu ne sais même<br>pas qui surveiller ?<br>On commence par ça.</h2>
+        <p class="ssub">Entre juste le nom de ton entreprise. Briefly analyse ton marché et te propose tes vrais concurrents — selon ta géo, ton pricing, tes fonctionnalités.</p>
+
+        <div class="discover-steps">
+          <div class="dstep">
+            <div class="dstep-num">1</div>
+            <div>
+              <h4>Tu décris ton produit</h4>
+              <p>Nom, URL, ou quelques mots. Briefly comprend ton marché en quelques secondes.</p>
+            </div>
+          </div>
+          <div class="dstep">
+            <div class="dstep-num">2</div>
+            <div>
+              <h4>On te suggère 5 à 10 concurrents</h4>
+              <p>Classés par pertinence — concurrents directs, alternatifs proches, acteurs émergents.</p>
+            </div>
+          </div>
+          <div class="dstep">
+            <div class="dstep-num">3</div>
+            <div>
+              <h4>Tu valides, supprimes, ajustes</h4>
+              <p>Tu gardes le contrôle. L'IA assiste, tu décides. Aucune suggestion ne part sans ton accord.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Discover mockup -->
+      <div>
+        <div class="dmock">
+          <div class="dmock-top">
+            <div class="dmock-input">
+              <span class="dmock-input-text">Mon SaaS de gestion RH pour PME…</span>
+              <div class="dmock-input-cursor"></div>
+            </div>
+            <div class="dmock-btn">Analyser →</div>
+          </div>
+          <div class="dmock-body">
+            <div class="dmock-lbl">5 concurrents suggérés · Marché : SaaS RH · France + Europe</div>
+
+            <div class="dsug checked">
+              <div class="dsug-check"></div>
+              <div class="dsug-info">
+                <div class="dsug-name">Lucca</div>
+                <div class="dsug-meta">SaaS RH · Paris · 200-500 employés · ~49€/mois</div>
+              </div>
+              <div class="dsug-match">Direct</div>
+            </div>
+
+            <div class="dsug checked">
+              <div class="dsug-check"></div>
+              <div class="dsug-info">
+                <div class="dsug-name">Factorial</div>
+                <div class="dsug-meta">SaaS RH · Barcelone · PME · ~5€/employé</div>
+              </div>
+              <div class="dsug-match">Direct</div>
+            </div>
+
+            <div class="dsug checked">
+              <div class="dsug-check"></div>
+              <div class="dsug-info">
+                <div class="dsug-name">Payfit</div>
+                <div class="dsug-meta">Paie + RH · Paris · Série D · Fort sur paie</div>
+              </div>
+              <div class="dsug-match">Proche</div>
+            </div>
+
+            <div class="dsug">
+              <div class="dsug-check"></div>
+              <div class="dsug-info">
+                <div class="dsug-name">Sage HR</div>
+                <div class="dsug-meta">UK · Enterprise · Hors cible</div>
+              </div>
+              <div class="dsug-match" style="background:rgba(150,150,150,.1);color:var(--dim)">Éloigné</div>
+            </div>
+
+            <div class="dsug">
+              <div class="dsug-check"></div>
+              <div class="dsug-info">
+                <div class="dsug-name">HiPay</div>
+                <div class="dsug-meta">Paiement · Pas RH · À supprimer</div>
+              </div>
+              <div class="dsug-match" style="background:rgba(150,150,150,.1);color:var(--dim)">Indirect</div>
+            </div>
+
+            <div class="dmock-footer">
+              <div class="dmock-footer-note">3 sélectionnés · Modifiable à tout moment</div>
+              <div class="dmock-footer-btn">Démarrer la veille →</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ FEATURES ══════════════════════════════════════ -->
+<div class="section" style="padding-top:80px">
+  <div class="slabel">Ce que Briefly surveille</div>
+  <h2>Cinq sources. Un seul email.</h2>
+  <p class="ssub" style="margin-bottom:48px;">Tout ce que tu devrais déjà savoir sur tes concurrents — agrégé, résumé, livré.</p>
+
+  <div class="feats">
+    <div class="feat"><div class="feat-ico">💰</div><h3>Changements de prix</h3><p>Dès qu'un concurrent modifie sa page pricing, tu le sais dans les 7 jours. Avant et après, avec le delta.</p></div>
+    <div class="feat"><div class="feat-ico">✍️</div><h3>Nouveaux contenus</h3><p>Chaque article, landing, case study détecté et résumé en 2 lignes. Leur stratégie éditoriale visible en temps réel.</p></div>
+    <div class="feat"><div class="feat-ico">💼</div><h3>Signaux recrutement</h3><p>Chaque offre d'emploi analysée comme un signal de roadmap. Tu sais ce qu'ils préparent avant qu'ils l'annoncent.</p></div>
+    <div class="feat"><div class="feat-ico">⭐</div><h3>Avis clients</h3><p>Nouveaux avis Trustpilot et Google analysés par sentiment. Leurs points faibles = ton brief commercial.</p></div>
+    <div class="feat"><div class="feat-ico">📰</div><h3>Mentions presse</h3><p>Levées, partenariats, interviews — toutes les mentions médias agrégées et synthétisées.</p></div>
+    <div class="feat"><div class="feat-ico">🎯</div><h3>Recommandation IA</h3><p>L'IA relie tous les signaux et identifie l'opportunité à saisir cette semaine. Pas de l'info — une décision.</p></div>
+  </div>
+</div>
+
+<!-- ═══════ VS CHATGPT ════════════════════════════════════ -->
+<div class="vs-wrap">
+  <div class="vs-inner">
+    <div class="slabel">Différenciation</div>
+    <div class="vs-box">
+      <h3>Pourquoi pas juste ChatGPT ?</h3>
+      <div class="vs-row">
+        <div class="vs-col vs-chatgpt">
+          <div class="vs-lbl">ChatGPT</div>
+          <div class="vs-line">Analyse une information que tu lui apportes</div>
+          <div class="vs-line">Répond à une question quand tu la poses</div>
+          <div class="vs-line">Oublie tout entre chaque session</div>
+          <div class="vs-line">Ne fait rien sans toi</div>
+        </div>
+        <div class="vs-col vs-briefly">
+          <div class="vs-lbl">Briefly</div>
+          <div class="vs-line">Te livre les bonnes informations sans que tu cherches</div>
+          <div class="vs-line">T'évite de devoir poser la question</div>
+          <div class="vs-line">Mémorise 6 mois d'historique concurrent</div>
+          <div class="vs-line">Tourne seul. Livre. Tu lis.</div>
+        </div>
+      </div>
+      <p class="vs-punch">ChatGPT analyse une information. Briefly te livre les bonnes.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ USE CASES ════════════════════════════════════= -->
+<div class="section" style="padding-top:80px">
+  <div class="slabel">Pour qui</div>
+  <h2>Un avantage. Trois contextes.</h2>
+  <p class="ssub" style="margin-bottom:48px;">Peu importe ton rôle — Briefly transforme l'information en avance.</p>
+
+  <div class="ucases">
+    <div class="ucase">
+      <div class="ucase-who">Founder SaaS</div>
+      <h3>Ajuste avant que les prospects posent la question</h3>
+      <p>Ton concurrent vient de baisser ses prix. Tu as 7 jours pour adapter ton discours commercial avant que ça remonte en démo.</p>
+      <div class="ucase-result">"J'ai ajusté mon pricing avant que mes prospects en parlent."</div>
+    </div>
+    <div class="ucase">
+      <div class="ucase-who">Head of Growth</div>
+      <h3>Identifie un canal avant qu'il devienne compétitif</h3>
+      <p>Un concurrent teste un nouveau canal d'acquisition. Tu le vois dès la première semaine — pas quand c'est saturé.</p>
+      <div class="ucase-result">"J'ai vu leur pivot SEO 3 semaines avant qu'il produise des résultats."</div>
+    </div>
+    <div class="ucase">
+      <div class="ucase-who">Agence</div>
+      <h3>Vends une veille que tes clients ne peuvent pas faire seuls</h3>
+      <p>Configure Briefly pour chacun de tes clients. Livre un rapport de veille mensuel co-brandé. Une nouvelle ligne de revenus, zéro travail supplémentaire.</p>
+      <div class="ucase-result">"Je facture 300€/mois de veille. Briefly me coûte 149€."</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ PROOF ══════════════════════════════════════════ -->
+<div class="proof-wrap">
+  <div class="proof-inner">
+    <div class="slabel">Bêta testeurs</div>
+    <h2 style="color:var(--ivory)">Ce qu'ils disent après<br>deux semaines.</h2>
+
+    <div class="proof-grid">
+      <div class="pquote">
+        <div class="pq-text">"Le lundi matin, je lis mon Briefly avant mes emails. En 3 minutes je sais ce qui s'est passé chez mes concurrents. C'est devenu un réflexe que je ne peux plus enlever."</div>
+        <div class="pq-author">
+          <div class="pq-av">TL</div>
+          <div><div class="pq-name">Thomas L.</div><div class="pq-role">CEO · SaaS RH · 12 personnes</div></div>
+          <div class="pq-tag">Bêta</div>
+        </div>
+      </div>
+      <div class="pquote">
+        <div class="pq-text">"Mon concurrent a levé des fonds un vendredi soir. Le lundi matin Briefly me l'avait résumé avec les implications. J'ai ajusté mon pitch investisseur le mardi."</div>
+        <div class="pq-author">
+          <div class="pq-av">SC</div>
+          <div><div class="pq-name">Sophie C.</div><div class="pq-role">Fondatrice · Fintech · Série A</div></div>
+          <div class="pq-tag">Bêta</div>
+        </div>
+      </div>
+      <div class="pquote">
+        <div class="pq-text">"Je facture maintenant 300€/mois de veille concurrentielle à mes clients. 20 minutes de configuration. Briefly est à 149€. Le calcul est simple."</div>
+        <div class="pq-author">
+          <div class="pq-av">MR</div>
+          <div><div class="pq-name">Marc R.</div><div class="pq-role">Directeur · Agence digitale · Paris</div></div>
+          <div class="pq-tag">Bêta</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ PRICING ════════════════════════════════════════ -->
+<div class="pricing-wrap" id="pricing">
+  <div class="pricing-inner">
+    <div class="slabel">Tarifs</div>
+    <h2 style="color:var(--ivory)">Simple. Transparent.<br>Sans engagement.</h2>
+    <div class="pricing-note">Aucun setup · Aucun suivi · Aucun effort · Résiliation en 1 clic depuis Stripe</div>
+
+    <div class="pcards">
+      <div class="pcard">
+        <div class="pcard-tier">Solo · Fondateur · Freelance</div>
+        <div class="pamt"><span class="pcurr">€</span><span class="pnum">19</span></div>
+        <div class="pper">par mois · sans engagement</div>
+        <ul class="pfeat">
+          <li>Jusqu'à 5 concurrents surveillés</li>
+          <li>Rapport hebdomadaire chaque lundi</li>
+          <li>Découverte automatique de concurrents</li>
+          <li>Détection prix, contenus, emploi</li>
+          <li>Score d'activité + recommandation IA</li>
+          <li>Archive 3 mois</li>
+        </ul>
+        <a href="#signup" class="pbtn pbtn-dim">Démarrer gratuitement</a>
+      </div>
+
+      <div class="pcard featured">
+        <div class="pcard-tier">✦ Le plus populaire · PME &amp; Startups</div>
+        <div class="pamt"><span class="pcurr" style="color:rgba(255,255,255,.55)">€</span><span class="pnum">49</span></div>
+        <div class="pper">par mois · sans engagement</div>
+        <ul class="pfeat">
+          <li>Jusqu'à 15 concurrents surveillés</li>
+          <li>Rapport hebdo + alertes urgentes</li>
+          <li>Découverte automatique de concurrents</li>
+          <li>Toutes sources (presse incluse)</li>
+          <li>Rapport partageable avec l'équipe</li>
+          <li>Export PDF board / investisseurs</li>
+          <li>Archive illimitée</li>
+        </ul>
+        <a href="#signup" class="pbtn pbtn-white">Démarrer gratuitement</a>
+      </div>
+
+      <div class="pcard">
+        <div class="pcard-tier">Agences · Multi-clients</div>
+        <div class="pamt"><span class="pcurr">€</span><span class="pnum">149</span></div>
+        <div class="pper">par mois · sans engagement</div>
+        <ul class="pfeat">
+          <li>Jusqu'à 10 clients / projets</li>
+          <li>White label — rapport à ton logo</li>
+          <li>50 concurrents au total</li>
+          <li>Découverte automatique par client</li>
+          <li>Export PDF par client</li>
+          <li>API d'export JSON/CSV</li>
+        </ul>
+        <a href="#signup" class="pbtn pbtn-dim">Démarrer gratuitement</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ FAQ ════════════════════════════════════════════ -->
+<div class="section">
+  <div class="slabel">FAQ</div>
+  <h2>Ce que tu te demandes<br>probablement.</h2>
+
+  <div class="faq-list">
+    <div class="faq-item">
+      <div class="fq">ChatGPT peut faire la même chose, non ?</div>
+      <div class="fa">ChatGPT peut analyser une information que tu lui apportes. Briefly t'évite de devoir <strong>la chercher, la collecter, la comparer et la structurer</strong> — chaque semaine, automatiquement, sans que tu n'y penses. ChatGPT répond à une question. Briefly t'évite d'avoir à la poser.</div>
+    </div>
+    <div class="faq-item">
+      <div class="fq">Comment Briefly trouve mes concurrents automatiquement ?</div>
+      <div class="fa">Tu entres le nom ou l'URL de ton produit. Briefly analyse ton marché (catégorie, géo, pricing, taille) et propose 5 à 10 concurrents classés par pertinence. <strong>Tu valides, supprimes, ajustes</strong> — aucune suggestion ne part sans ton accord. Tu peux aussi entrer les URLs directement si tu les connais déjà.</div>
+    </div>
+    <div class="faq-item">
+      <div class="fq">Mes concurrents peuvent-ils savoir que je les surveille ?</div>
+      <div class="fa">Non. Briefly se comporte comme un visiteur anonyme standard. Tes concurrents ne peuvent pas savoir qu'un outil les observe. Ta liste de concurrents est <strong>strictement privée</strong>.</div>
+    </div>
+    <div class="faq-item">
+      <div class="fq">Que se passe-t-il si rien ne change cette semaine ?</div>
+      <div class="fa">Tu reçois quand même ton rapport — plus court. L'absence de mouvement est une information stratégique. Si le pattern dure, la synthèse IA te signale qu'ils sont probablement en sprint interne — et qu'une annonce pourrait arriver prochainement.</div>
+    </div>
+    <div class="faq-item">
+      <div class="fq">Puis-je annuler à tout moment ?</div>
+      <div class="fa"><strong>Oui. Un clic depuis Stripe.</strong> Aucun frais d'annulation, aucun préavis. Le service s'arrête à la fin de la période déjà payée.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ FINAL CTA ══════════════════════════════════════ -->
+<div class="fcta-wrap" id="signup">
+  <div class="fcta">
+    <div class="slabel" style="margin-bottom:20px;">Commence maintenant</div>
+    <h2>Tu peux continuer<br>à deviner. Ou commencer<br><span style="color:var(--orange);font-style:italic">à savoir.</span></h2>
+    <p class="fcta-sub">Ton premier rapport arrive lundi. Et pour la première fois, tu ne seras pas surpris.</p>
+
+    <form class="sform" onsubmit="handleSignup(event)">
+      <input type="email" placeholder="ton@email.com" required id="email-input">
+      <button type="submit" class="btn-hero" style="white-space:nowrap;border-radius:5px">
+        Recevoir mon premier rapport →
+      </button>
+    </form>
+    <p class="sform-note">14 jours gratuits · Sans carte bancaire · Résiliation en 1 clic</p>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="flogo">brief<span>.</span>ly</div>
+  <p>© 2026 Briefly · Made in France · hello@briefly.fr</p>
+  <p>Mentions légales · Confidentialité · CGV</p>
+</footer>
+
+<script>
+function handleSignup(e) {
+  e.preventDefault();
+  const email = document.getElementById('email-input').value;
+  const btn = e.target.querySelector('button');
+  btn.innerHTML = '✓ Inscrit — à lundi !';
+  btn.style.background = '#1a7a40';
+  btn.disabled = true;
+  // TODO: Stripe Checkout redirect
+  console.log('V3 signup:', email);
+  setTimeout(() => {
+    btn.innerHTML = 'Recevoir mon premier rapport →';
+    btn.style.background = '';
+    btn.disabled = false;
+    document.getElementById('email-input').value = '';
+  }, 4000);
+}
+
+// Smooth scroll
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const el = document.querySelector(a.getAttribute('href'));
+    if (el) { e.preventDefault(); el.scrollIntoView({ behavior:'smooth', block:'start' }); }
+  });
+});
+
+// Scroll reveal
+const io = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.style.opacity = '1';
+      entry.target.style.transform = 'translateY(0)';
+    }
+  });
+}, { threshold: 0.08 });
+
+document.querySelectorAll(
+  '.step,.feat,.ucase,.pquote,.pcard,.pain-item,.wnow-cell,.dstep,.dsug'
+).forEach(el => {
+  el.style.opacity = '0';
+  el.style.transform = 'translateY(18px)';
+  el.style.transition = 'opacity .5s ease, transform .5s ease';
+  io.observe(el);
+});
+
+// Discover mockup interactivity
+document.querySelectorAll('.dsug').forEach(el => {
+  el.addEventListener('click', () => el.classList.toggle('checked'));
+});
+</script>
+</body>
+</html>
